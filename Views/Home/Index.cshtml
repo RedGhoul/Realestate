@@ -1,0 +1,180 @@
+@model IEnumerable<RealEstate.Models.Home>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GeneralizedAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MlsNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BedRooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BathRooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brokerage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YearBuilt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NeighborHood)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Basement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LinkUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewConstruction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromRemax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rentable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuilderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FeaturesAndFinishes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RentPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GenSlug)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HtmlPage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressFk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RealEstateBrokerFk)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GeneralizedAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MlsNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BedRooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BathRooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brokerage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearBuilt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeighborHood)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Basement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinkUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewConstruction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FromRemax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rentable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuilderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FeaturesAndFinishes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenSlug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HtmlPage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressFk.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RealEstateBrokerFk.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
