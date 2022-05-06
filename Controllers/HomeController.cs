@@ -23,6 +23,45 @@ namespace RealEstate.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Search(string? keywords, string? city, string? landtype, int beds, int baths)
+        {
+            var foundHomes = _context.Homes
+                .Include(x => x.Rooms)
+                .Include(x => x.AddressFk)
+                .Include(h => h.Imagelinks.Take(5))
+                .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0 &&
+                            x.BedRooms > 0 && x.MlsNumber != null);
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                foundHomes = foundHomes.Where(x => x.SearchVector.Matches(EF.Functions.WebSearchToTsQuery(keywords)));
+            }
+            
+            if (beds > 0)
+            {
+                foundHomes = foundHomes.Where(x => x.BedRooms >= beds);
+            }
+
+            if (baths > 0)
+            {
+                foundHomes = foundHomes.Where(x => x.BedRooms >= beds);
+            }
+
+            if (city != null)
+            {
+                foundHomes = foundHomes.Where(x => x.AddressFk.City.Contains(city));
+            }
+            
+            if (landtype != null)
+            {
+                foundHomes = foundHomes.Where(x => x.Type.Contains(landtype));
+            }
+
+            return View(await foundHomes.Take(20).ToListAsync());
+        }
+        
+        
         // GET: Home
         public async Task<IActionResult> Index()
         {

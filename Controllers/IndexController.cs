@@ -17,25 +17,26 @@ public class IndexController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var RandomHomes =
-            _context.Homes
+        var randomHomes =
+            await _context.Homes
                 .Include(h => h.AddressFk)
                 .Include(h => h.RealEstateBrokerFk)
                 .Include(h => h.Imagelinks.Take(5))
-                .Where(x => x.Imagelinks.Count > 0)
-                .Take(8);
+                .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0 
+                            && x.BedRooms > 0 && x.MlsNumber != null)
+                .Take(9).ToListAsync();
 
         IndexViewModel vm = new IndexViewModel()
         {
-            City = _context.Locations.GroupBy(x => x.City).Select(x => x.Key).ToList(),
-            LandType = _context.Landtypes.Select(x => x.Name).ToList(),
-            RandomHomes = RandomHomes.ToList(),
-            CountByCity = _context.Locations
+            City = await _context.Locations.GroupBy(x => x.City).Select(x => x.Key).ToListAsync(),
+            LandType = await _context.Landtypes.Select(x => x.Name).ToListAsync(),
+            RandomHomes = randomHomes,
+            CountByCity = await _context.Locations
                 .GroupBy(x => x.City).Select(x => new CountModel()
                 {
                     Name = x.Key,
                     Count = x.Count()
-                }).Where(x => x.Name != null && x.Count > 800 && x.Name.Length > 0).ToList()
+                }).Where(x => x.Name != null && x.Count > 800 && x.Name.Length > 0).ToListAsync()
         };
         return View(vm);
     }
