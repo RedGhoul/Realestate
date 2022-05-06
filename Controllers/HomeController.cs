@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,12 @@ namespace RealEstate.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext =
-                _context.Homes.Include(h => h.AddressFk).Include(h => h.RealEstateBrokerFk).Take(20);
+                _context.Homes
+                    .Include(h => h.AddressFk)
+                    .Include(h => h.RealEstateBrokerFk)
+                    .Include(h => h.Imagelinks)
+                    .Where(x => x.Imagelinks.Count > 0)
+                    .Take(20);
             return View(await applicationDbContext.ToListAsync());
         }
 

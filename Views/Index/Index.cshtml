@@ -1,8 +1,131 @@
-﻿@{
+﻿@model IndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>Homes for Sale, Rentals and Commercial Properties</h2>
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <h5 class="font-weight-light mb-4 font-italic text-white">Custom rounded search bars with input group</h5>
+            <div class="bg-white p-5 rounded shadow">
+                <form action="">
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                            <div class="input-group-append">
+                                <button id="button-addon1" type="submit" class="btn btn-link text-primary">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <select class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                                <option selected="selected">City</option>
+                                <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <select class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                                <option selected="selected">Land Type</option>
+                                <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <select class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                                <option selected="selected">Number Of Bed Rooms</option>
+                                <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
+                            </select>
+                            <select class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                                <option selected="selected">Number Of Bath Rooms</option>
+                                <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mt-5">
+                        <div class="card shadow mb-6">
+                            <div class="card-body px-5 py-5 text-center text-md-left">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <h2 class="mb-3">
+                                            <a href="/">Houses for Sale</a>
+                                        </h2>
+                                        <p class="mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-5">
+                        <div class="card shadow mb-6">
+                            <div class="card-body px-5 py-5 text-center text-md-left">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <h2 class="mb-3">
+                                            <a href="/">Apartments for Sale</a>
+                                        </h2>
+                                        <p class="mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <h2>Popular Houses Right Now</h2>
+        @foreach (var item in Model.RandomHomes)
+        {
+            <div class="col-4 pt-2">
+                <div class="card shadow">
+                    <img src="@item.Imagelinks.FirstOrDefault().Link" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
+
+                    <div class="card-body">
+                        <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
+                        @if (@item.Price == 0)
+                        {
+                            <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                        }
+                        else
+                        {
+                            <p class="card-text">$@item.Price</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5>@item.BedRooms - Beds Rooms</h5>
+                        <h5>@item.BathRooms - Bath Rooms</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row pt-4">
+        <h2>Popular Cities in Canada</h2>
+        @foreach (var item in Model.CountByCity)
+        {
+            <div class="col-3 pt-2">
+                <div class="card shadow">
+                    <img src="https://cdn.britannica.com/93/94493-050-35524FED/Toronto.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
+
+                    <div class="card-body">
+                        <h3 class="h5 card-title mt-3">@item.Name</h3>
+                        <h3 class="h5 card-title mt-3">Homes For Sale</h3>
+                        <p class="card-text">@item.Count</p><a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm">Learn More</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

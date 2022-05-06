@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NpgsqlTypes;
 
 namespace RealEstate.Models
 {
@@ -15,5 +16,6 @@ namespace RealEstate.Models
         public string? MapBoxResult { get; set; }
 
         public virtual Home? Home { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

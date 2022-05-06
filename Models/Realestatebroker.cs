@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NpgsqlTypes;
 
 namespace RealEstate.Models
 {
@@ -18,5 +19,6 @@ namespace RealEstate.Models
 
         public virtual ICollection<Brokeragephonenumber> Brokeragephonenumbers { get; set; }
         public virtual ICollection<Home> Homes { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace RealEstate.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
+                name: "aspnetroles",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -25,7 +25,7 @@ namespace RealEstate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "aspnetusers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -732,7 +732,7 @@ namespace RealEstate.Migrations
 
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "aspnetroleclaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -753,7 +753,7 @@ namespace RealEstate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
+                name: "aspnetuserclaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -774,7 +774,7 @@ namespace RealEstate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
+                name: "aspnetuserlogins",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
@@ -794,7 +794,7 @@ namespace RealEstate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
+                name: "aspnetuserroles",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
@@ -818,7 +818,7 @@ namespace RealEstate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
+                name: "aspnetusertokens",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),

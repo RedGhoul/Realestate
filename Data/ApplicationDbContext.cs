@@ -13,6 +13,8 @@ namespace RealEstate.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.SetCommandTimeout(150000);
+            
         }
 
         public virtual DbSet<AuthGroup> AuthGroups { get; set; } = null!;
@@ -42,10 +44,41 @@ namespace RealEstate.Data
         public virtual DbSet<Useragentname> Useragentnames { get; set; } = null!;
         public virtual DbSet<Userprofileinfo> Userprofileinfos { get; set; } = null!;
         
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder
+                .UseLowerCaseNamingConvention();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Home>()
+                .HasGeneratedTsVectorColumn(
+                    p => p.SearchVector,
+                    "english", 
+                    p => new { p.GeneralizedAddress, p.MlsNumber, 
+                        p.Brokerage, p.Type, p.SubType, p.YearBuilt, p.NeighborHood,
+                        p.Description, p.FeaturesAndFinishes, p.GenSlug
+                    })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN"); 
+            modelBuilder.Entity<Location>()
+                .HasGeneratedTsVectorColumn(
+                    p => p.SearchVector,
+                    "english", 
+                    p => new { p.City, p.ExactAddress, 
+                        p.PostalCode
+                    })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN"); 
+            
+            modelBuilder.Entity<Realestatebroker>()
+                .HasGeneratedTsVectorColumn(
+                    p => p.SearchVector,
+                    "english", 
+                    p => new { p.Name, p.Brokerage
+                    })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN"); 
+            
             modelBuilder.Entity<AuthGroup>(entity =>
             {
                 entity.ToTable("auth_group");
