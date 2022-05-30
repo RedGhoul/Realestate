@@ -2,9 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NpgsqlTypes;
 using RealEstate.Data;
 
 #nullable disable
@@ -19,32 +18,33 @@ namespace RealEstate.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -53,19 +53,19 @@ namespace RealEstate.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -78,19 +78,19 @@ namespace RealEstate.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -102,17 +102,17 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -124,10 +124,10 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -139,16 +139,16 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -158,54 +158,54 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("RealEstate.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -214,1066 +214,308 @@ namespace RealEstate.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Name" }, "auth_group_name_a6ea08ec_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "Name" }, "auth_group_name_a6ea08ec_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "Name" }, "auth_group_name_key")
-                        .IsUnique();
-
-                    b.ToTable("auth_group", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthGroupPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("integer")
-                        .HasColumnName("group_id");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("permission_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "GroupId" }, "auth_group_permissions_group_id_b120cbf9");
-
-                    b.HasIndex(new[] { "GroupId", "PermissionId" }, "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "PermissionId" }, "auth_group_permissions_permission_id_84c5c92e");
-
-                    b.ToTable("auth_group_permissions", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Codename")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("codename");
-
-                    b.Property<int>("ContentTypeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("content_type_id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ContentTypeId" }, "auth_permission_content_type_id_2f476e4b");
-
-                    b.HasIndex(new[] { "ContentTypeId", "Codename" }, "auth_permission_content_type_id_codename_01ab375a_uniq")
-                        .IsUnique();
-
-                    b.ToTable("auth_permission", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateJoined")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date_joined");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(254)
-                        .HasColumnType("character varying(254)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("first_name");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
-
-                    b.Property<bool>("IsStaff")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_staff");
-
-                    b.Property<bool>("IsSuperuser")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_superuser");
-
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_login");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("username");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Username" }, "auth_user_username_6821ab7c_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "Username" }, "auth_user_username_6821ab7c_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "Username" }, "auth_user_username_key")
-                        .IsUnique();
-
-                    b.ToTable("auth_user", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUserGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("integer")
-                        .HasColumnName("group_id");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "GroupId" }, "auth_user_groups_group_id_97559544");
-
-                    b.HasIndex(new[] { "UserId" }, "auth_user_groups_user_id_6a12ed8b");
-
-                    b.HasIndex(new[] { "UserId", "GroupId" }, "auth_user_groups_user_id_group_id_94350c0c_uniq")
-                        .IsUnique();
-
-                    b.ToTable("auth_user_groups", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUserUserPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("permission_id");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "PermissionId" }, "auth_user_user_permissions_permission_id_1fbb5f2c");
-
-                    b.HasIndex(new[] { "UserId" }, "auth_user_user_permissions_user_id_a95ead1b");
-
-                    b.HasIndex(new[] { "UserId", "PermissionId" }, "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
-                        .IsUnique();
-
-                    b.ToTable("auth_user_user_permissions", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Models.Brokeragephonenumber", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_brokeragephonenumber_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
-                        .HasColumnName("phone_number");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RealEstateBrokerFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("real_estate_broker_fk_id");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "RealEstateBrokerFkId" }, "mainapp_brokeragephonenumber_real_estate_broker_fk_id_fd45cbee");
+                    b.HasIndex("RealEstateBrokerFkId");
 
-                    b.ToTable("brokeragephonenumber", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoAdminLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<short>("ActionFlag")
-                        .HasColumnType("smallint")
-                        .HasColumnName("action_flag");
-
-                    b.Property<DateTime>("ActionTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("action_time");
-
-                    b.Property<string>("ChangeMessage")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("change_message");
-
-                    b.Property<int?>("ContentTypeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("content_type_id");
-
-                    b.Property<string>("ObjectId")
-                        .HasColumnType("text")
-                        .HasColumnName("object_id");
-
-                    b.Property<string>("ObjectRepr")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("object_repr");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ContentTypeId" }, "django_admin_log_content_type_id_c4bce8eb");
-
-                    b.HasIndex(new[] { "UserId" }, "django_admin_log_user_id_c564eba6");
-
-                    b.ToTable("django_admin_log", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoContentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppLabel")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("app_label");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("model");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "AppLabel", "Model" }, "django_content_type_app_label_model_76bd3d3b_uniq")
-                        .IsUnique();
-
-                    b.ToTable("django_content_type", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoMigration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("App")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("app");
-
-                    b.Property<DateTime>("Applied")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("applied");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("django_migrations", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoQOrmq", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("key");
-
-                    b.Property<DateTime?>("Lock")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("lock");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("payload");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("django_q_ormq", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoQSchedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Args")
-                        .HasColumnType("text")
-                        .HasColumnName("args");
-
-                    b.Property<string>("Cluster")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("cluster");
-
-                    b.Property<string>("Cron")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("cron");
-
-                    b.Property<string>("Func")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("func");
-
-                    b.Property<string>("Hook")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("hook");
-
-                    b.Property<string>("Kwargs")
-                        .HasColumnType("text")
-                        .HasColumnName("kwargs");
-
-                    b.Property<short?>("Minutes")
-                        .HasColumnType("smallint")
-                        .HasColumnName("minutes");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
-                    b.Property<DateTime?>("NextRun")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("next_run");
-
-                    b.Property<int>("Repeats")
-                        .HasColumnType("integer")
-                        .HasColumnName("repeats");
-
-                    b.Property<string>("ScheduleType")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("character varying(1)")
-                        .HasColumnName("schedule_type");
-
-                    b.Property<string>("Task")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("task");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("django_q_schedule", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoQTask", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Args")
-                        .HasColumnType("text")
-                        .HasColumnName("args");
-
-                    b.Property<int>("AttemptCount")
-                        .HasColumnType("integer")
-                        .HasColumnName("attempt_count");
-
-                    b.Property<string>("Func")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("func");
-
-                    b.Property<string>("Group")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("group");
-
-                    b.Property<string>("Hook")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("hook");
-
-                    b.Property<string>("Kwargs")
-                        .HasColumnType("text")
-                        .HasColumnName("kwargs");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Result")
-                        .HasColumnType("text")
-                        .HasColumnName("result");
-
-                    b.Property<DateTime>("Started")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("started");
-
-                    b.Property<DateTime>("Stopped")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("stopped");
-
-                    b.Property<bool>("Success")
-                        .HasColumnType("boolean")
-                        .HasColumnName("success");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Id" }, "django_q_task_id_32882367_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "Id" }, "django_q_task_id_32882367_like"), new[] { "varchar_pattern_ops" });
-
-                    b.ToTable("django_q_task", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoSession", b =>
-                {
-                    b.Property<string>("SessionKey")
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)")
-                        .HasColumnName("session_key");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expire_date");
-
-                    b.Property<string>("SessionData")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("session_data");
-
-                    b.HasKey("SessionKey")
-                        .HasName("django_session_pkey");
-
-                    b.HasIndex(new[] { "ExpireDate" }, "django_session_expire_date_a5c62663");
-
-                    b.HasIndex(new[] { "SessionKey" }, "django_session_session_key_c0390e0f_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "SessionKey" }, "django_session_session_key_c0390e0f_like"), new[] { "varchar_pattern_ops" });
-
-                    b.ToTable("django_session", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoSite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Domain")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("domain");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Domain" }, "django_site_domain_a2e37b91_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "Domain" }, "django_site_domain_a2e37b91_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "Domain" }, "django_site_domain_a2e37b91_uniq")
-                        .IsUnique();
-
-                    b.ToTable("django_site", (string)null);
+                    b.ToTable("Brokeragephonenumbers");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Home", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_home_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("AddressFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("address_fk_id");
+                        .HasColumnType("int");
 
                     b.Property<string>("Basement")
-                        .HasMaxLength(70)
-                        .HasColumnType("character varying(70)")
-                        .HasColumnName("basement");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("BathRooms")
-                        .HasColumnType("double precision")
-                        .HasColumnName("bath_rooms");
+                        .HasColumnType("float");
 
                     b.Property<double>("BedRooms")
-                        .HasColumnType("double precision")
-                        .HasColumnName("bed_rooms");
+                        .HasColumnType("float");
 
                     b.Property<string>("Brokerage")
-                        .HasMaxLength(70)
-                        .HasColumnType("character varying(70)")
-                        .HasColumnName("brokerage");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BuilderName")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("builder_name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FeaturesAndFinishes")
-                        .HasColumnType("text")
-                        .HasColumnName("features_and_finishes");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("FromRemax")
-                        .HasColumnType("boolean")
-                        .HasColumnName("from_remax");
+                        .HasColumnType("bit");
 
                     b.Property<string>("GenSlug")
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)")
-                        .HasColumnName("gen_slug");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GeneralizedAddress")
                         .IsRequired()
-                        .HasMaxLength(130)
-                        .HasColumnType("character varying(130)")
-                        .HasColumnName("generalized_address");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HtmlPage")
-                        .HasColumnType("text")
-                        .HasColumnName("html_page");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkUrl")
                         .IsRequired()
-                        .HasMaxLength(190)
-                        .HasColumnType("character varying(190)")
-                        .HasColumnName("link_url");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MlsNumber")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasColumnName("mls_number");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NeighborHood")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("neighbor_hood");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("NewConstruction")
-                        .HasColumnType("boolean")
-                        .HasColumnName("new_construction");
+                        .HasColumnType("bit");
 
                     b.Property<long>("Price")
-                        .HasColumnType("bigint")
-                        .HasColumnName("price");
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("RealEstateBrokerFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("real_estate_broker_fk_id");
+                        .HasColumnType("int");
 
                     b.Property<long?>("RentPrice")
-                        .HasColumnType("bigint")
-                        .HasColumnName("rent_price");
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("Rentable")
-                        .HasColumnType("boolean")
-                        .HasColumnName("rentable");
-
-                    b.Property<NpgsqlTsVector>("searchvector")
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("tsvector")
-                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
-                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "GeneralizedAddress", "MlsNumber", "Brokerage", "Type", "SubType", "YearBuilt", "NeighborHood", "Description", "FeaturesAndFinishes", "GenSlug" });
+                        .HasColumnType("bit");
 
                     b.Property<string>("SubType")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasColumnName("sub_type");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasColumnName("type");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("YearBuilt")
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)")
-                        .HasColumnName("year_built");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("searchvector");
+                    b.HasIndex("AddressFkId")
+                        .IsUnique()
+                        .HasFilter("[AddressFkId] IS NOT NULL");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("searchvector"), "GIN");
+                    b.HasIndex("RealEstateBrokerFkId");
 
-                    b.HasIndex(new[] { "AddressFkId" }, "mainapp_home_address_fk_id_key")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "BathRooms" }, "mainapp_home_bath_rooms_137edddd");
-
-                    b.HasIndex(new[] { "BedRooms" }, "mainapp_home_bed_rooms_e1dd4d2b");
-
-                    b.HasIndex(new[] { "CreatedAt" }, "mainapp_home_created_at_274498cc");
-
-                    b.HasIndex(new[] { "GeneralizedAddress" }, "mainapp_home_generalized_address_3bde2872_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "GeneralizedAddress" }, "mainapp_home_generalized_address_3bde2872_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "GeneralizedAddress" }, "mainapp_home_generalized_address_key")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "LinkUrl" }, "mainapp_home_link_url_a7c2ffa4");
-
-                    b.HasIndex(new[] { "LinkUrl" }, "mainapp_home_link_url_a7c2ffa4_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "LinkUrl" }, "mainapp_home_link_url_a7c2ffa4_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "MlsNumber" }, "mainapp_home_mls_number_695b3ba1");
-
-                    b.HasIndex(new[] { "MlsNumber" }, "mainapp_home_mls_number_695b3ba1_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "MlsNumber" }, "mainapp_home_mls_number_695b3ba1_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "Price" }, "mainapp_home_price_94cbb17b");
-
-                    b.HasIndex(new[] { "RealEstateBrokerFkId" }, "mainapp_home_real_estate_broker_fk_id_cd1e8434");
-
-                    b.HasIndex(new[] { "RentPrice" }, "mainapp_home_rent_price_ee9cc280");
-
-                    b.HasIndex(new[] { "UpdatedAt" }, "mainapp_home_updated_at_2c8b37bc");
-
-                    b.ToTable("home", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.HomeInterested", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_home_interested_id_seq'::regclass)");
-
-                    b.Property<int>("HomeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("home_id");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "HomeId" }, "mainapp_home_interested_home_id_263ffd84");
-
-                    b.HasIndex(new[] { "HomeId", "UserId" }, "mainapp_home_interested_home_id_user_id_93aac0c5_uniq")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "UserId" }, "mainapp_home_interested_user_id_32383c2b");
-
-                    b.ToTable("home_interested", (string)null);
+                    b.ToTable("Homes");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Imagelink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_homeimagelink_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("HomeFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("home_fk_id");
+                        .HasColumnType("int");
 
                     b.Property<string>("Link")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("link");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "HomeFkId" }, "mainapp_homeimagelink_home_fk_id_467c2a69");
+                    b.HasIndex("HomeFkId");
 
-                    b.ToTable("imagelink", (string)null);
+                    b.ToTable("Imagelinks");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Landtype", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_landtype_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("landtype", (string)null);
+                    b.ToTable("Landtypes");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_location_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("City")
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)")
-                        .HasColumnName("city");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExactAddress")
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("exact_address");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HouseNumber")
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)")
-                        .HasColumnName("house_number");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Lat")
-                        .HasColumnType("double precision")
-                        .HasColumnName("lat");
+                        .HasColumnType("float");
 
                     b.Property<double?>("Long")
-                        .HasColumnType("double precision")
-                        .HasColumnName("long");
+                        .HasColumnType("float");
 
                     b.Property<string>("MapBoxResult")
-                        .HasColumnType("text")
-                        .HasColumnName("map_box_result");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .HasMaxLength(9)
-                        .HasColumnType("character varying(9)")
-                        .HasColumnName("postal_code");
-
-                    b.Property<NpgsqlTsVector>("searchvector")
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("tsvector")
-                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
-                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "City", "ExactAddress", "PostalCode" });
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("searchvector");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("searchvector"), "GIN");
-
-                    b.HasIndex(new[] { "City" }, "mainapp_location_city_36967550");
-
-                    b.HasIndex(new[] { "City" }, "mainapp_location_city_36967550_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "City" }, "mainapp_location_city_36967550_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "HouseNumber" }, "mainapp_location_house_number_881c76ce");
-
-                    b.HasIndex(new[] { "HouseNumber" }, "mainapp_location_house_number_881c76ce_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "HouseNumber" }, "mainapp_location_house_number_881c76ce_like"), new[] { "varchar_pattern_ops" });
-
-                    b.HasIndex(new[] { "Lat" }, "mainapp_location_lat_2905578d");
-
-                    b.HasIndex(new[] { "Long" }, "mainapp_location_long_cfc4fc6a");
-
-                    b.HasIndex(new[] { "PostalCode" }, "mainapp_location_postal_code_2d4d36cd");
-
-                    b.HasIndex(new[] { "PostalCode" }, "mainapp_location_postal_code_2d4d36cd_like");
-
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex(new[] { "PostalCode" }, "mainapp_location_postal_code_2d4d36cd_like"), new[] { "varchar_pattern_ops" });
-
-                    b.ToTable("location", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Realestatebroker", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_realestatebroker_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Brokerage")
                         .IsRequired()
-                        .HasMaxLength(65)
-                        .HasColumnType("character varying(65)")
-                        .HasColumnName("brokerage");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BrokerageWebsite")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("brokerageWebsite");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(65)
-                        .HasColumnType("character varying(65)")
-                        .HasColumnName("name");
-
-                    b.Property<NpgsqlTsVector>("searchvector")
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("tsvector")
-                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
-                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Name", "Brokerage" });
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("searchvector");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("searchvector"), "GIN");
-
-                    b.ToTable("realestatebroker", (string)null);
+                    b.ToTable("Realestatebrokers");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_room_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("HomeFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("home_fk_id");
+                        .HasColumnType("int");
 
                     b.Property<string>("Location")
-                        .HasMaxLength(125)
-                        .HasColumnType("character varying(125)")
-                        .HasColumnName("location");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoomSize")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("room_size");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "HomeFkId" }, "mainapp_room_home_fk_id_20c7a123");
+                    b.HasIndex("HomeFkId");
 
-                    b.ToTable("room", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Scraperconfig", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_scrapingconfig_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BaseDomain")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("base_domain");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ScrapConfigName")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("scrap_config_name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("scraperconfig", (string)null);
+                    b.ToTable("Scraperconfigs");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Searchlocation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_scrapingsearchlocation_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("LocationName")
-                        .HasColumnType("text")
-                        .HasColumnName("location_name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ScrapingConfigFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("scraping_config_fk_id");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ScrapingConfigFkId" }, "mainapp_scrapingsearchlocation_scraping_config_fk_id_6f277334");
+                    b.HasIndex("ScrapingConfigFkId");
 
-                    b.ToTable("searchlocation", (string)null);
+                    b.ToTable("Searchlocations");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Useragentname", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_useragentname_id_seq'::regclass)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("useragentname", (string)null);
-                });
-
-            modelBuilder.Entity("RealEstate.Models.Userprofileinfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("nextval('mainapp_userprofileinfo_id_seq'::regclass)");
-
-                    b.Property<int>("UserFkId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_fk_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "UserFkId" }, "mainapp_userprofileinfo_user_fk_id_key")
-                        .IsUnique();
-
-                    b.ToTable("userprofileinfo", (string)null);
+                    b.ToTable("Useragentnames");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1327,144 +569,35 @@ namespace RealEstate.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RealEstate.Models.AuthGroupPermission", b =>
-                {
-                    b.HasOne("RealEstate.Models.AuthGroup", "Group")
-                        .WithMany("AuthGroupPermissions")
-                        .HasForeignKey("GroupId")
-                        .IsRequired()
-                        .HasConstraintName("auth_group_permissions_group_id_b120cbf9_fk_auth_group_id");
-
-                    b.HasOne("RealEstate.Models.AuthPermission", "Permission")
-                        .WithMany("AuthGroupPermissions")
-                        .HasForeignKey("PermissionId")
-                        .IsRequired()
-                        .HasConstraintName("auth_group_permissio_permission_id_84c5c92e_fk_auth_perm");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("Permission");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthPermission", b =>
-                {
-                    b.HasOne("RealEstate.Models.DjangoContentType", "ContentType")
-                        .WithMany("AuthPermissions")
-                        .HasForeignKey("ContentTypeId")
-                        .IsRequired()
-                        .HasConstraintName("auth_permission_content_type_id_2f476e4b_fk_django_co");
-
-                    b.Navigation("ContentType");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUserGroup", b =>
-                {
-                    b.HasOne("RealEstate.Models.AuthGroup", "Group")
-                        .WithMany("AuthUserGroups")
-                        .HasForeignKey("GroupId")
-                        .IsRequired()
-                        .HasConstraintName("auth_user_groups_group_id_97559544_fk_auth_group_id");
-
-                    b.HasOne("RealEstate.Models.AuthUser", "User")
-                        .WithMany("AuthUserGroups")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("auth_user_groups_user_id_6a12ed8b_fk_auth_user_id");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUserUserPermission", b =>
-                {
-                    b.HasOne("RealEstate.Models.AuthPermission", "Permission")
-                        .WithMany("AuthUserUserPermissions")
-                        .HasForeignKey("PermissionId")
-                        .IsRequired()
-                        .HasConstraintName("auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm");
-
-                    b.HasOne("RealEstate.Models.AuthUser", "User")
-                        .WithMany("AuthUserUserPermissions")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id");
-
-                    b.Navigation("Permission");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RealEstate.Models.Brokeragephonenumber", b =>
                 {
                     b.HasOne("RealEstate.Models.Realestatebroker", "RealEstateBrokerFk")
                         .WithMany("Brokeragephonenumbers")
-                        .HasForeignKey("RealEstateBrokerFkId")
-                        .HasConstraintName("mainapp_brokeragepho_real_estate_broker_f_fd45cbee_fk_mainapp_r");
+                        .HasForeignKey("RealEstateBrokerFkId");
 
                     b.Navigation("RealEstateBrokerFk");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoAdminLog", b =>
-                {
-                    b.HasOne("RealEstate.Models.DjangoContentType", "ContentType")
-                        .WithMany("DjangoAdminLogs")
-                        .HasForeignKey("ContentTypeId")
-                        .HasConstraintName("django_admin_log_content_type_id_c4bce8eb_fk_django_co");
-
-                    b.HasOne("RealEstate.Models.AuthUser", "User")
-                        .WithMany("DjangoAdminLogs")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("django_admin_log_user_id_c564eba6_fk_auth_user_id");
-
-                    b.Navigation("ContentType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Home", b =>
                 {
                     b.HasOne("RealEstate.Models.Location", "AddressFk")
                         .WithOne("Home")
-                        .HasForeignKey("RealEstate.Models.Home", "AddressFkId")
-                        .HasConstraintName("mainapp_home_address_fk_id_aa9741e6_fk_mainapp_location_id");
+                        .HasForeignKey("RealEstate.Models.Home", "AddressFkId");
 
                     b.HasOne("RealEstate.Models.Realestatebroker", "RealEstateBrokerFk")
                         .WithMany("Homes")
-                        .HasForeignKey("RealEstateBrokerFkId")
-                        .HasConstraintName("mainapp_home_real_estate_broker_f_cd1e8434_fk_mainapp_r");
+                        .HasForeignKey("RealEstateBrokerFkId");
 
                     b.Navigation("AddressFk");
 
                     b.Navigation("RealEstateBrokerFk");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.HomeInterested", b =>
-                {
-                    b.HasOne("RealEstate.Models.Home", "Home")
-                        .WithMany("HomeInteresteds")
-                        .HasForeignKey("HomeId")
-                        .IsRequired()
-                        .HasConstraintName("mainapp_home_interested_home_id_263ffd84_fk_mainapp_home_id");
-
-                    b.HasOne("RealEstate.Models.AuthUser", "User")
-                        .WithMany("HomeInteresteds")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("mainapp_home_interested_user_id_32383c2b_fk_auth_user_id");
-
-                    b.Navigation("Home");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RealEstate.Models.Imagelink", b =>
                 {
                     b.HasOne("RealEstate.Models.Home", "HomeFk")
                         .WithMany("Imagelinks")
-                        .HasForeignKey("HomeFkId")
-                        .HasConstraintName("mainapp_homeimagelink_home_fk_id_467c2a69_fk_mainapp_home_id");
+                        .HasForeignKey("HomeFkId");
 
                     b.Navigation("HomeFk");
                 });
@@ -1473,8 +606,7 @@ namespace RealEstate.Migrations
                 {
                     b.HasOne("RealEstate.Models.Home", "HomeFk")
                         .WithMany("Rooms")
-                        .HasForeignKey("HomeFkId")
-                        .HasConstraintName("mainapp_room_home_fk_id_20c7a123_fk_mainapp_home_id");
+                        .HasForeignKey("HomeFkId");
 
                     b.Navigation("HomeFk");
                 });
@@ -1483,62 +615,13 @@ namespace RealEstate.Migrations
                 {
                     b.HasOne("RealEstate.Models.Scraperconfig", "ScrapingConfigFk")
                         .WithMany("Searchlocations")
-                        .HasForeignKey("ScrapingConfigFkId")
-                        .HasConstraintName("mainapp_scrapingsear_scraping_config_fk_i_6f277334_fk_mainapp_s");
+                        .HasForeignKey("ScrapingConfigFkId");
 
                     b.Navigation("ScrapingConfigFk");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.Userprofileinfo", b =>
-                {
-                    b.HasOne("RealEstate.Models.AuthUser", "UserFk")
-                        .WithOne("Userprofileinfo")
-                        .HasForeignKey("RealEstate.Models.Userprofileinfo", "UserFkId")
-                        .IsRequired()
-                        .HasConstraintName("mainapp_userprofileinfo_user_fk_id_9fe7715b_fk_auth_user_id");
-
-                    b.Navigation("UserFk");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthGroup", b =>
-                {
-                    b.Navigation("AuthGroupPermissions");
-
-                    b.Navigation("AuthUserGroups");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthPermission", b =>
-                {
-                    b.Navigation("AuthGroupPermissions");
-
-                    b.Navigation("AuthUserUserPermissions");
-                });
-
-            modelBuilder.Entity("RealEstate.Models.AuthUser", b =>
-                {
-                    b.Navigation("AuthUserGroups");
-
-                    b.Navigation("AuthUserUserPermissions");
-
-                    b.Navigation("DjangoAdminLogs");
-
-                    b.Navigation("HomeInteresteds");
-
-                    b.Navigation("Userprofileinfo")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RealEstate.Models.DjangoContentType", b =>
-                {
-                    b.Navigation("AuthPermissions");
-
-                    b.Navigation("DjangoAdminLogs");
-                });
-
             modelBuilder.Entity("RealEstate.Models.Home", b =>
                 {
-                    b.Navigation("HomeInteresteds");
-
                     b.Navigation("Imagelinks");
 
                     b.Navigation("Rooms");
