@@ -8,7 +8,6 @@ namespace RealEstate.Models
     {
         public Home()
         {
-            HomeInteresteds = new HashSet<HomeInterested>();
             Imagelinks = new HashSet<Imagelink>();
             Rooms = new HashSet<Room>();
         }
@@ -42,10 +41,7 @@ namespace RealEstate.Models
 
         public virtual Location? AddressFk { get; set; }
         public virtual Realestatebroker? RealEstateBrokerFk { get; set; }
-        public virtual ICollection<HomeInterested> HomeInteresteds { get; set; }
         public virtual ICollection<Imagelink> Imagelinks { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
-        
-        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

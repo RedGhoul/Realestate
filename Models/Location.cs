@@ -16,6 +16,5 @@ namespace RealEstate.Models
         public string? MapBoxResult { get; set; }
 
         public virtual Home? Home { get; set; }
-        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

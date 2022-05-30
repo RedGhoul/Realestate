@@ -30,13 +30,14 @@ namespace RealEstate.Controllers
                 .Include(x => x.Rooms)
                 .Include(x => x.AddressFk)
                 .Include(h => h.Imagelinks.Take(5))
-                .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0 &&
+                .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
                             x.BedRooms > 0 && x.MlsNumber != null);
 
-            if (!string.IsNullOrEmpty(keywords))
-            {
-                foundHomes = foundHomes.Where(x => x.SearchVector.Matches(EF.Functions.WebSearchToTsQuery(keywords)));
-            }
+            
+            // if (!string.IsNullOrEmpty(keywords))
+            // {
+            //     foundHomes = foundHomes.Where(x => x.SearchVector.Matches(EF.Functions.WebSearchToTsQuery(keywords)));
+            // }
             
             if (beds > 0)
             {
@@ -70,7 +71,8 @@ namespace RealEstate.Controllers
                     .Include(h => h.AddressFk)
                     .Include(h => h.RealEstateBrokerFk)
                     .Include(h => h.Imagelinks)
-                    .Where(x => x.Imagelinks.Count > 0)
+                    .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
+                                x.BedRooms > 0 && x.MlsNumber != null)
                     .Take(20);
             return View(await applicationDbContext.ToListAsync());
         }

@@ -5,28 +5,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-3 pt-2">
-                <div class="card shadow">
-                    <img src="@item.Imagelinks.FirstOrDefault().Link" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
+<div class="row">
+    <div class="col-3">
+        <div class="card shadow">
+            <div class="card-body mt-2">
+                <h3 class="h5 card-title mt-3">Property Type</h3>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p><a href="#" class="btn btn-primary btn-sm">Learn More</a>
+            </div>
+        </div>
+        <div class="card shadow mt-2">
+            <div class="card-body">
+                <h3 class="h5 card-title mt-3">Property Status</h3>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p><a href="#" class="btn btn-primary btn-sm">Learn More</a>
+            </div>
+        </div>
+        <div class="card shadow mt-2">
+            <div class="card-body">
+                <h3 class="h5 card-title mt-3">Property By City</h3>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p><a href="#" class="btn btn-primary btn-sm">Learn More</a>
+            </div>
+        </div>
+        <div class="card shadow mt-2">
+            <div class="card-body">
+                <h3 class="h5 card-title mt-3">Featured Properties</h3>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p><a href="#" class="btn btn-primary btn-sm">Learn More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-3 pt-2">
+                    <div class="card shadow">
+                        <img src="@item.Imagelinks.FirstOrDefault().Link" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
 
-                    <div class="card-body">
-                        <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
-                        @if (@item.Price == 0)
-                        {
-                            <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
-                        }
-                        else
-                        {
-                            <p class="card-text">$@item.Price</p><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
-                        }
+                        <div class="card-body">
+                            <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
+                            @if (@item.Price == 0)
+                            {
+                                
+                                <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                            }
+                            else
+                            {
+                                <p class="card-text">$@item.Price</p><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
 
+    </div>
 </div>
