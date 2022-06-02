@@ -84,6 +84,35 @@ namespace RealEstate.Data
                     .HasForeignKey(d => d.ScrapingConfigFkId);
             });
 
+            modelBuilder.Entity<Home>().Property(x => x.GeneralizedAddress).HasColumnType("NVARCHAR(200)");
+            modelBuilder.Entity<Home>().Property(x => x.MlsNumber).HasColumnType("NVARCHAR(40)");
+            modelBuilder.Entity<Home>().Property(x => x.Brokerage).HasColumnType("NVARCHAR(70)");
+            modelBuilder.Entity<Home>().Property(x => x.Type).HasColumnType("NVARCHAR(20)");
+            modelBuilder.Entity<Home>().Property(x => x.SubType).HasColumnType("NVARCHAR(30)");
+            modelBuilder.Entity<Home>().Property(x => x.YearBuilt).HasColumnType("NVARCHAR(30)");
+            modelBuilder.Entity<Home>().Property(x => x.NeighborHood).HasColumnType("NVARCHAR(60)");
+            modelBuilder.Entity<Home>().Property(x => x.Basement).HasColumnType("NVARCHAR(70)");
+            modelBuilder.Entity<Home>().Property(x => x.LinkUrl).HasColumnType("NVARCHAR(255)");
+            modelBuilder.Entity<Home>().Property(x => x.Description).HasColumnType("NVARCHAR(MAX)");
+            modelBuilder.Entity<Home>().Property(x => x.BuilderName).HasColumnType("NVARCHAR(40)");
+            modelBuilder.Entity<Home>().Property(x => x.FeaturesAndFinishes).HasColumnType("NVARCHAR(MAX)");
+            modelBuilder.Entity<Home>().Property(x => x.GenSlug).HasColumnType("NVARCHAR(200)");
+            modelBuilder.Entity<Home>().Property(x => x.HtmlPage).HasColumnType("NVARCHAR(MAX)");
+            modelBuilder.Entity<Home>().HasIndex(x => x.GenSlug);
+            modelBuilder.Entity<Home>().HasIndex(x => x.Price);
+            modelBuilder.Entity<Brokeragephonenumber>().Property(x => x.PhoneNumber).HasColumnType("NVARCHAR(255)");
+            modelBuilder.Entity<Imagelink>().Property(x => x.Link).HasColumnType("NVARCHAR(400)");
+            modelBuilder.Entity<Location>().Property(x => x.ExactAddress).HasColumnType("NVARCHAR(200)");
+            modelBuilder.Entity<Location>().Property(x => x.City).HasColumnType("NVARCHAR(150)");
+            modelBuilder.Entity<Location>().Property(x => x.HouseNumber).HasColumnType("NVARCHAR(10)");
+            modelBuilder.Entity<Location>().Property(x => x.PostalCode).HasColumnType("NVARCHAR(10)");
+            modelBuilder.Entity<Realestatebroker>().Property(x => x.Name).HasColumnType("NVARCHAR(200)");
+            modelBuilder.Entity<Realestatebroker>().Property(x => x.Brokerage).HasColumnType("NVARCHAR(255)");
+            modelBuilder.Entity<Realestatebroker>().Property(x => x.Brokerage).HasColumnType("NVARCHAR(200)");
+            modelBuilder.Entity<Room>().Property(x => x.Name).HasColumnType("NVARCHAR(25)");
+            modelBuilder.Entity<Room>().Property(x => x.Location).HasColumnType("NVARCHAR(100)");
+            modelBuilder.Entity<Room>().Property(x => x.RoomSize).HasColumnType("NVARCHAR(100)");
+
             OnModelCreatingPartial(modelBuilder);
         }
 
