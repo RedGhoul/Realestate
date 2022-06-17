@@ -1,169 +1,281 @@
-@model RealEstate.Models.Home
+@model RealEstate.Models.ViewModels.DetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="row">
+    <h1>@Model.mainHome.GeneralizedAddress</h1>
+    <h3>@(Model.mainHome.Rentable ? "Rentable" : "For Sale") : $@(Model.mainHome.Rentable ? Model.mainHome.RentPrice : Model.mainHome.Price) </h3>
+    @if (Model.mainHome.MlsNumber != null)
+    {
+        <h3>MLS #: @Model.mainHome.MlsNumber</h3>
+    }
+    @if (Model.mainHome.NewConstruction)
+    {
+        <h3>New Construction</h3>
+    }
+</div>
+<div class="row">
+<div class="col-9">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model?.mainHome?.Imagelinks.Count; i++)
+            {
+                if (i == 0)
+                {
+                    <div class="carousel-item active">
+                        <img src="@Model?.mainHome?.Imagelinks?.ElementAt(i).Link" class="d-block w-100 rounded" alt="@Model?.mainHome?.Imagelinks?.ElementAt(i).Id">
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        <img src="@Model?.mainHome?.Imagelinks?.ElementAt(i).Link" class="d-block w-100 rounded" alt="@Model?.mainHome?.Imagelinks?.ElementAt(i).Id">
+                    </div>
+                }
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="card shadow mb-6 mt-5">
+        <div class="card-header">
+            <h2>Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                @if (Model.mainHome?.BedRooms > 0)
+                {
+                    <div class="col-3">
+                        <h5>Bed Rooms</h5>
+                        <h6>@Model.mainHome.BedRooms</h6>
+                    </div>
+                }
 
-<div>
-    <h4>Home</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GeneralizedAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GeneralizedAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MlsNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MlsNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BedRooms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BedRooms)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BathRooms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BathRooms)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brokerage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brokerage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SubType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SubType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearBuilt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearBuilt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NeighborHood)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NeighborHood)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Basement)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Basement)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LinkUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LinkUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NewConstruction)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NewConstruction)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FromRemax)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FromRemax)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rentable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rentable)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BuilderName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BuilderName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FeaturesAndFinishes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FeaturesAndFinishes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RentPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RentPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GenSlug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GenSlug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HtmlPage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HtmlPage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressFk)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AddressFk.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RealEstateBrokerFk)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RealEstateBrokerFk.Id)
-        </dd>
-    </dl>
+                @if (Model.mainHome?.BathRooms > 0)
+                {
+                    <div class="col-3">
+                        <h5>Bath Rooms</h5>
+                        <h6>@Model.mainHome.BathRooms</h6>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.mainHome?.Type))
+                {
+                    <div class="col-3">
+                        <h5>Home Type</h5>
+                        <h6>@Model.mainHome.Type</h6>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.mainHome?.SubType))
+                {
+                    <div class="col-3">
+                        <h5>Home SubType</h5>
+                        <h6>@Model.mainHome.SubType</h6>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.mainHome?.NeighborHood))
+                {
+                    <div class="col-3">
+                        <h5>Neighborhood</h5>
+                        <h6>@Model.mainHome.NeighborHood</h6>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.mainHome?.Basement))
+                {
+                    <div class="col-3">
+                        <h5>Basement</h5>
+                        <h6>@Model.mainHome.Basement</h6>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.mainHome?.Description))
+    {
+        <div class="card shadow mb-6 mt-5">
+            <div class="card-header">
+                <h2>Description</h2>
+            </div>
+            <div class="card-body">
+                <p>@Html.Raw(Model.mainHome.Description)</p>
+            </div>
+
+        </div>
+    }
+    @if (Model.mainHome.AddressFk != null)
+    {
+        <div class="card shadow mb-6 mt-5">
+            <div class="card-header">
+                <h2>Location</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mt-2">
+                    @if (!string.IsNullOrEmpty(Model.mainHome?.AddressFk?.ExactAddress))
+                    {
+                        <div class="col-4">
+                            <h5>Address:</h5>
+                            <h6>@Model.mainHome.AddressFk.ExactAddress</h6>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.mainHome?.AddressFk?.City))
+                    {
+                        <div class="col-4">
+                            <h5>City</h5>
+                            <h6>@Model.mainHome.AddressFk.City</h6>
+                        </div>
+                    }
+
+                    <div class="col-4">
+                        <h5>Country</h5>
+                        <h6>Canada</h6>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="card shadow mb-6 mt-5">
+            <div class="card-header">
+                <h2>Map</h2>
+            </div>
+            <div class="card-body">
+                <div id="map-box-map" style="width:100%;height:380px;"></div>
+            </div>
+
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.mainHome.FeaturesAndFinishes))
+    {
+        <div class="card shadow mb-6 mt-5">
+            <div class="card-header">
+                <h2>Features And Finishes</h2>
+            </div>
+            <div class="card-body">
+                <p>@Model.mainHome.FeaturesAndFinishes</p>
+            </div>
+
+        </div>
+    }
+    <div class="card shadow mb-6 mt-5">
+        <div class="card-header">
+            <h2>Legal Notice</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h6>
+                        Our comprehensive database is populated by our meticulous research and analysis of public data.
+                        MirrorRealEstate strives for accuracy and we make every effort to verify the information. However,
+                        MirrorRealEstate is not liable for the use or misuse of the site's information. The information displayed
+                        on MirrorRealEstate.com is for reference only.
+                    </h6>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="col-3">
+    @if (Model.mainHome.RealEstateBrokerFk != null)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Real Estate Broker</h5>
+                <h6 class="card-title">@Model.mainHome.RealEstateBrokerFk.Name</h6>
+                <h5 class="card-title">Brokerage</h5>
+                <h6 class="card-title">@Model.mainHome.RealEstateBrokerFk.Brokerage</h6>
+                <a class="btn btn-primary btn-sm" href="@Model.mainHome.RealEstateBrokerFk.BrokerageWebsite">Brokerage Website</a>
+                <a href="/" class="btn btn-primary mt-4">Related HomesBrokerage</a>
+            </div>
+        </div>
+    }
+
+    @if (Model.relatedHomesSide.Count > 0)
+    {
+        @foreach (Home home in Model.relatedHomesSide)
+        {
+            @if (home.Imagelinks.Count > 0)
+            {
+                <div class="card d-flex justify-content-center mt-3" style="width: 18rem;">
+                    <img src="@home?.Imagelinks?.First()?.Link" class="card-img-top rounded" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@home.GeneralizedAddress</h5>
+                        @if (home.Price > 0)
+                        {
+                            <h6 class="card-title">@home.Price for sale</h6>
+                        }
+                        else
+                        {
+                            <h6 class="card-title">@home.RentPrice for rent</h6>
+                        }
+                        <a asp-action="Details" asp-route-id="@home.Id" class="btn btn-primary mt-4">View Home</a>
+                    </div>
+                </div>
+            }
+        }
+    }
+
 </div>
+</div>
+<div class="row">
+        @if (Model.relatedHomesBottom.Count > 0)
+        {
+            @foreach (Home home in Model.relatedHomesBottom)
+            {
+                if (home.Imagelinks.Count > 0 && home.Imagelinks.First().Link.Length > 0)
+                {
+                    <div class="col d-flex justify-content-right mt-3">
+                        <div class="card shadow border" style="width: 18rem;">
+                            <img src="@home.Imagelinks.First().Link" class="card-img-top rounded" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@home.GeneralizedAddress</h5>
+                                @if (home.Price > 0)
+                                {
+                                    <h6 class="card-title">@home.Price for sale</h6>
+                                }
+                                else
+                                {
+                                    <h6 class="card-title">@home.RentPrice for rent</h6>
+                                }
+                                <a asp-action="Details" asp-route-id="@home.Id" class="btn btn-primary mt-4">View Home</a>
+                                <a href="/" class="btn btn-primary mt-4">View</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+            }
+        }
+
+    </div>
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
+<script>
+        mapboxgl.accessToken = '@Model.MapBoxApiKey'
+        var map = new mapboxgl.Map({
+            container: 'map-box-map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [@Model.mainHome.AddressFk.Long, @Model.mainHome.AddressFk.Lat],
+            zoom: 15 // starting zoom
+        });
+        var marker = new mapboxgl.Marker()
+            .setLngLat([@Model.mainHome.AddressFk.Long, @Model.mainHome.AddressFk.Lat])
+            .addTo(map);
+    </script>

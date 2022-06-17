@@ -11,20 +11,23 @@ using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using RealEstate.Data;
 using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 
 namespace RealEstate.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string? keywords, string? city, string? landtype, int beds, int baths)
+        public async Task<IActionResult> Search(string? city, string? landtype, int beds, int baths)
         {
             var foundHomes = _context.Homes
                 .Include(x => x.Rooms)
@@ -32,12 +35,7 @@ namespace RealEstate.Controllers
                 .Include(h => h.Imagelinks.Take(5))
                 .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
                             x.BedRooms > 0 && x.MlsNumber != null);
-
             
-            // if (!string.IsNullOrEmpty(keywords))
-            // {
-            //     foundHomes = foundHomes.Where(x => x.SearchVector.Matches(EF.Functions.WebSearchToTsQuery(keywords)));
-            // }
             
             if (beds > 0)
             {
@@ -85,16 +83,45 @@ namespace RealEstate.Controllers
                 return NotFound();
             }
 
-            var home = await _context.Homes
+            var home = _context.Homes
                 .Include(h => h.AddressFk)
+                .Include(h => h.Imagelinks)
                 .Include(h => h.RealEstateBrokerFk)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .AsSplitQuery()
+                .FirstOrDefault(m => m.Id == id);
+
+            List<Home> relatedHomesSides = _context.Homes.Include(h => h.AddressFk)
+                .Include(h => h.Imagelinks)
+                .Include(h => h.RealEstateBrokerFk)
+                .Where(x => x.AddressFk.City == home.AddressFk.City 
+                            && x.Id != home.Id 
+                            && x.Imagelinks.Any())
+                .AsSplitQuery()
+                .Take(5).ToList();
+            
+            List<Home> relatedHomesBottom = _context.Homes.Include(h => h.AddressFk)
+                .Include(h => h.Imagelinks)
+                .Include(h => h.RealEstateBrokerFk)
+                .Where(x => x.AddressFk.City == home.AddressFk.City && x.Id != home.Id && 
+                            !relatedHomesSides.Select(v => v.Id).Contains(x.Id) 
+                            && x.Imagelinks.Any())
+                .Skip(new Random().Next(1, 100))
+                .AsSplitQuery()
+                .Take(6).ToList();
+
+            
             if (home == null)
             {
                 return NotFound();
             }
 
-            return View(home);
+            return View(new DetailsViewModel()
+            {
+                MapBoxApiKey = _configuration[nameof(DetailsViewModel.MapBoxApiKey)],
+                mainHome = home,
+                relatedHomesBottom = relatedHomesBottom,
+                relatedHomesSide = relatedHomesSides
+            });
         }
 
         // GET: Home/Create

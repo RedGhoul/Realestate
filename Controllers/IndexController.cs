@@ -10,6 +10,7 @@ public class IndexController : Controller
 {
     private readonly ApplicationDbContext _context;
 
+
     public IndexController(ApplicationDbContext context)
     {
         _context = context;
@@ -28,6 +29,9 @@ public class IndexController : Controller
 
         IndexViewModel vm = new IndexViewModel()
         {
+            ListingCount = _context.Homes.Count(),
+            Cities = _context.Locations.Select(x => x.City).Distinct().ToList(),
+            Landtypes = _context.Homes.Select(x => x.Type).Distinct().ToList(),
             City = await _context.Locations.GroupBy(x => x.City).Select(x => x.Key).ToListAsync(),
             LandType = await _context.Landtypes.Select(x => x.Name).ToListAsync(),
             RandomHomes = randomHomes,
