@@ -57,7 +57,7 @@ namespace RealEstate.Controllers
                 foundHomes = foundHomes.Where(x => x.Type.Contains(landtype));
             }
 
-            return View(await foundHomes.Take(20).ToListAsync());
+            return View(await foundHomes.OrderByDescending(x => x.CreatedAt).Take(20).ToListAsync());
         }
         
         
@@ -70,7 +70,7 @@ namespace RealEstate.Controllers
                     .Include(h => h.RealEstateBrokerFk)
                     .Include(h => h.Imagelinks)
                     .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
-                                x.BedRooms > 0 && x.MlsNumber != null)
+                                x.BedRooms > 0 && x.MlsNumber != null).OrderByDescending(x => x.CreatedAt)
                     .Take(20);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -83,37 +83,37 @@ namespace RealEstate.Controllers
                 return NotFound();
             }
 
-            var home = _context.Homes
+            var home = await _context.Homes
                 .Include(h => h.AddressFk)
                 .Include(h => h.Imagelinks)
                 .Include(h => h.RealEstateBrokerFk)
                 .AsSplitQuery()
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            List<Home> relatedHomesSides = _context.Homes.Include(h => h.AddressFk)
-                .Include(h => h.Imagelinks)
-                .Include(h => h.RealEstateBrokerFk)
-                .Where(x => x.AddressFk.City == home.AddressFk.City 
-                            && x.Id != home.Id 
-                            && x.Imagelinks.Any())
-                .AsSplitQuery()
-                .Take(5).ToList();
-            
-            List<Home> relatedHomesBottom = _context.Homes.Include(h => h.AddressFk)
-                .Include(h => h.Imagelinks)
-                .Include(h => h.RealEstateBrokerFk)
-                .Where(x => x.AddressFk.City == home.AddressFk.City && x.Id != home.Id && 
-                            !relatedHomesSides.Select(v => v.Id).Contains(x.Id) 
-                            && x.Imagelinks.Any())
-                .Skip(new Random().Next(1, 100))
-                .AsSplitQuery()
-                .Take(6).ToList();
-
-            
             if (home == null)
             {
                 return NotFound();
             }
+            
+            List<Home> relatedHomesSides = await _context.Homes.Include(h => h.AddressFk)
+                .Include(h => h.Imagelinks)
+                .Include(h => h.RealEstateBrokerFk)
+                .Where(x => x.AddressFk.City == home.AddressFk.City 
+                            && x.Id != home.Id 
+                            && x.Imagelinks.Any()).OrderByDescending(x => x.CreatedAt)
+                .AsSplitQuery()
+                .Take(5).ToListAsync();
+            
+            List<Home> relatedHomesBottom = await _context.Homes.Include(h => h.AddressFk)
+                .Include(h => h.Imagelinks)
+                .Include(h => h.RealEstateBrokerFk)
+                .Where(x => x.AddressFk.City == home.AddressFk.City && x.Id != home.Id && 
+                            !relatedHomesSides.Select(v => v.Id).Contains(x.Id) 
+                            && x.Imagelinks.Any()).OrderByDescending(x => x.CreatedAt)
+                .Skip(new Random().Next(1, 100))
+                .AsSplitQuery()
+                .Take(6).ToListAsync();
+            
 
             return View(new DetailsViewModel()
             {

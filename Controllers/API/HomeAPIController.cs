@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Models;
 using RealEstate.Models.Dtos;
+using Slugify;
 
 namespace RealEstate.Controllers.API
 {
@@ -20,12 +21,17 @@ namespace RealEstate.Controllers.API
     public class HomeAPIController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<HomeAPIController> _logger;
         private readonly IMapper _mapper;
         
-        public HomeAPIController(ApplicationDbContext context, IMapper mapper)
+        public HomeAPIController(ILogger<HomeAPIController> logger,
+            IConfiguration configuration, ApplicationDbContext context, IMapper mapper)
         {
+            _configuration = configuration;
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/HomeAPI
@@ -50,7 +56,6 @@ namespace RealEstate.Controllers.API
         }
 
         // PUT: api/HomeAPI/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHome(int id, Home home)
         {
@@ -81,22 +86,86 @@ namespace RealEstate.Controllers.API
         }
 
         // POST: api/HomeAPI
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<HomeDto>> PostHome(HomeDto home)
+        public async Task<ActionResult<HomeDto>> PostHome([FromQuery]string accessKey, HomeDto home)
         {
-            var mainHome = _mapper.Map<Home>(home);
-            _context.Homes.Add(mainHome);
-            if (_context.Homes.Any(x => x.MlsNumber == mainHome.MlsNumber
-                                        || x.LinkUrl == mainHome.LinkUrl || 
-                                        x.GeneralizedAddress == mainHome.GeneralizedAddress))
+            if (accessKey != _configuration["accessKey"]) 
+                return BadRequest("No AccessKey Was Found");
+            
+            var newHome = _mapper.Map<Home>(home);
+            
+            if (_context.Homes.Any(x => x.LinkUrl == newHome.LinkUrl || 
+                                        x.GeneralizedAddress == newHome.GeneralizedAddress))
             {
-                return BadRequest();
+                return BadRequest("Home Already Exists");
             }
+
+            List<Imagelink> imagelinks = newHome.Imagelinks.ToList();
+            newHome.Imagelinks = new List<Imagelink>();
+            List<Room> rooms = newHome.Rooms.ToList();
+            newHome.Rooms = new List<Room>();
+            Realestatebroker realestatebroker = newHome.RealEstateBrokerFk;
+            newHome.RealEstateBrokerFk = null;
+            Location location = newHome.AddressFk;
+            newHome.AddressFk = null;
+            try
+            {
+                _context.Homes.Add(newHome);
+                await _context.SaveChangesAsync();
+                newHome.GenSlug = new SlugHelper().GenerateSlug(
+                    newHome.GeneralizedAddress) + newHome.Id;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(exception:e,"Error occured while saving new home");
+                return BadRequest("Home could not be saved, check logs");
+            }
+
+            foreach (Imagelink imagelink in imagelinks)
+            {
+                imagelink.HomeFkId = newHome.Id;
+                _context.Imagelinks.Add(imagelink);
+            }
+            
+            await _context.SaveChangesAsync();
+            
+            foreach (Room room in rooms)
+            {
+                room.HomeFkId = newHome.Id;
+                _context.Rooms.Add(room);
+            }
+            
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetHome", new { id = mainHome.Id }, home);
+            if (realestatebroker != null)
+            {
+                var existingRealestateAgent  =_context.Realestatebrokers.Where(x => x.Name == realestatebroker.Name).FirstOrDefault();
+                if (existingRealestateAgent == null)
+                {
+                    _context.Realestatebrokers.Add(realestatebroker);
+                    await _context.SaveChangesAsync();
+                    newHome.RealEstateBrokerFkId = realestatebroker.Id;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    newHome.RealEstateBrokerFkId = existingRealestateAgent.Id;
+                    await _context.SaveChangesAsync();
+                }
+
+            }
+            
+            if (location != null)
+            {
+                _context.Locations.Add(location);
+                await _context.SaveChangesAsync();
+                newHome.AddressFkId = location.Id;
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok("Successfully created new home");
         }
 
         // DELETE: api/HomeAPI/5

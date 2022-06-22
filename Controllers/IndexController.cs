@@ -25,6 +25,7 @@ public class IndexController : Controller
                 .Include(h => h.Imagelinks.Take(5))
                 .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0 
                             && x.BedRooms > 0 && x.MlsNumber != null)
+                .OrderByDescending(x => x.CreatedAt)
                 .Take(9).ToListAsync();
 
         IndexViewModel vm = new IndexViewModel()

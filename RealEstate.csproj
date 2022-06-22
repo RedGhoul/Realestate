@@ -29,6 +29,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.FuzzyStringMatch" Version="5.0.10" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Trigrams" Version="5.0.10" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+        <PackageReference Include="Slugify.Core" Version="3.0.0" />
     </ItemGroup>
 
     <ItemGroup>

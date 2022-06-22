@@ -1,8 +1,13 @@
-﻿namespace RealEstate.Models.Dtos;
+﻿
+
+using System.ComponentModel.DataAnnotations;
+
+namespace RealEstate.Models.Dtos;
 
 public class HomeDto
 {
-    public string GeneralizedAddress { get; set; } = null!;
+    [Required]
+    public string GeneralizedAddress { get; set; }
     public string? MlsNumber { get; set; }
     public double BedRooms { get; set; }
     public double BathRooms { get; set; }
@@ -28,8 +33,8 @@ public class HomeDto
     public string? GenSlug { get; set; }
     public string? HtmlPage { get; set; }
 
-    public virtual Location? AddressFk { get; set; }
-    public virtual Realestatebroker? RealEstateBrokerFk { get; set; }
-    public virtual ICollection<Imagelink> Imagelinks { get; set; }
-    public virtual ICollection<Room> Rooms { get; set; }
+    public  Location? AddressFk { get; set; }
+    public  Realestatebroker? RealEstateBrokerFk { get; set; }
+    public  ICollection<Imagelink>? Imagelinks { get; set; }
+    public  ICollection<Room>? Rooms { get; set; }
 }
