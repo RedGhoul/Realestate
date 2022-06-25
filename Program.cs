@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RealEstate.Data;
 using RealEstate.Models;
+using RealEstate.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(Program));
@@ -19,6 +21,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddMvc();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddResponseCompression();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("MyRedisConStr");
+    options.InstanceName = "SampleInstance";
+});
+
+builder.Services.AddTransient<CacheService>();
+
 var app = builder.Build();
 app.UseResponseCompression();
 // Configure the HTTP request pipeline.
