@@ -35,9 +35,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\API" />
       <Folder Include="Data" />
       <Folder Include="Migrations" />
+      <Folder Include="Presentation" />
       <Folder Include="wwwroot\img" />
     </ItemGroup>
 
