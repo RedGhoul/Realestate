@@ -38,6 +38,7 @@
       <Folder Include="Controllers\API" />
       <Folder Include="Data" />
       <Folder Include="Migrations" />
+      <Folder Include="wwwroot\img" />
     </ItemGroup>
 
 </Project>
