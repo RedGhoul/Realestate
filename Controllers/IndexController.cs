@@ -55,7 +55,7 @@ public class IndexController : Controller
                 {
                     Name = x.Key,
                     Count = x.Count()
-                }).Where(x => x.Name != null && x.Count > 800 && x.Name.Length > 0).ToListAsync())!);
+                }).Where(x => x.Name != null && x.Count > 800 && x.Name.Length > 0).Take(20).ToListAsync())!);
 
         var ListingCount = await _cache.GetOrSet<string>($"{nameof(IndexController)}_{nameof(Index)}_ListingCount",
             async Task<string>() => (await _context.Homes.CountAsync()).ToString());

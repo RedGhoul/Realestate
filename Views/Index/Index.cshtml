@@ -2,139 +2,210 @@
 @{
     ViewData["Title"] = "Home";
 }
-
-<div class="text-center">
-    <h2>Homes for Sale, Rentals and Commercial Properties</h2>
-    <div class="row mb-5">
-        <div class="col-lg-8 mx-auto">
-            <h5 class="font-weight-light mb-4 font-italic">Find Your Dream Home</h5>
-            <h4 class="font-weight-light mb-4 font-italic">Search from over @Model.ListingCount Listings</h4>
-            <div class="bg-white p-5 rounded shadow">
-                <form asp-controller="Home" asp-action="Search" method="get">
-                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-                        <div class="input-group">
-                            <input type="search" name="keywords" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
-                            <div class="input-group-append">
-                                <button id="button-addon1" type="submit" class="btn btn-link text-primary">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-                        <div class="input-group">
-                            <select name="city" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
-                                <option value="" disabled selected>Cities</option>
-                                <option value="Toronto">Toronto</option>
-                                <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-                        <div class="input-group">
-                            <select name="landtype" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
-                                <option value="" disabled selected>Land Type</option>
-                                <option value="Residential">Residential</option>
-                                <option value="2">Two</option><option value="3">Three</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-                        <div class="input-group">
-                            <select name="beds" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
-                                <option value="" disabled selected>Number Of Bed Rooms</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                                <option value="4">Four</option>
-                            </select>
-                            <select name="baths" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
-                                <option value="" disabled selected>Number Of Bath Rooms</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                                <option value="4">Four</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-primary">Search</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 mt-5">
-                <div class="card shadow mb-6">
-                    <div class="card-body px-5 py-5 text-center text-md-left">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <h2 class="mb-3">
-                                    <a href="/">Houses for Sale</a>
-                                </h2>
-                                <p class="mb-0"></p>
-                            </div>
+<div class="container-xxl text-center " style="
+    background-image: url('https://localhost:7208/img/vancouver2-unsplash.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;">
+<h2>Homes for Sale, Rentals and Commercial Properties</h2>
+<div class="row mb-5">
+    <div class="col-lg-8 mx-auto">
+        <h5 class="font-weight-light mb-4 font-italic">Find Your Dream Home</h5>
+        <h4 class="font-weight-light mb-4 font-italic">Search from over @Model.ListingCount Listings</h4>
+        <div class="bg-white p-5 rounded shadow">
+            <form asp-controller="Home" asp-action="Search" method="get">
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                    <div class="input-group">
+                        <input type="search" name="keywords" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                        <div class="input-group-append">
+                            <button id="button-addon1" type="submit" class="btn btn-link text-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-6 mt-5">
-                <div class="card shadow mb-6">
-                    <div class="card-body px-5 py-5 text-center text-md-left">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <h2 class="mb-3">
-                                    <a href="/">Apartments for Sale</a>
-                                </h2>
-                                <p class="mb-0"></p>
-                            </div>
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                    <div class="input-group">
+                        <select name="city" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                            <option value="" disabled selected>Cities</option>
+                            <option value="Toronto">Toronto</option>
+                            <option value="1">One</option><option value="2">Two</option><option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                    <div class="input-group">
+                        <select name="landtype" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                            <option value="" disabled selected>Land Type</option>
+                            <option value="Residential">Residential</option>
+                            <option value="2">Two</option><option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                    <div class="input-group">
+                        <select name="beds" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                            <option value="" disabled selected>Number Of Bed Rooms</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                        </select>
+                        <select name="baths" class="form-select" id="inlineFormCustomSelectPref" aria-label="Default select example">
+                            <option value="" disabled selected>Number Of Bath Rooms</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 mt-5">
+            <div class="card shadow mb-6">
+                <div class="card-body px-5 py-5 text-center text-md-left">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <h2 class="mb-3">
+                                <a href="/">Houses for Sale</a>
+                            </h2>
+                            <p class="mb-0"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row pt-4">
-        <h2>Popular Houses Right Now</h2>
-        @foreach (var item in Model.RandomHomes)
-        {
-            <div class="col-4 pt-2">
-                <div class="card shadow">
-                    <img src="@item.Imagelinks.FirstOrDefault().Link" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
-
-                    <div class="card-body">
-                        <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
-                        @if (@item.Price == 0)
-                        {
-                            <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
-                        }
-                        else
-                        {
-                            <p class="card-text">$@item.Price</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
-                        }
-                    </div>
-                    <div class="card-body">
-                        <h6>@item.BedRooms Beds @item.BathRooms Baths</h6>
-                        <h6></h6>
+        <div class="col-6 mt-5">
+            <div class="card shadow mb-6">
+                <div class="card-body px-5 py-5 text-center text-md-left">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <h2 class="mb-3">
+                                <a href="/">Apartments for Sale</a>
+                            </h2>
+                            <p class="mb-0"></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        }
+        </div>
     </div>
-    <div class="row pt-4">
-        <h2>Popular Cities in Canada</h2>
-        @foreach (var item in Model.CountByCity)
-        {
-            <div class="col-3 pt-2">
-                <div class="card shadow">
-                    <img src="https://cdn.britannica.com/93/94493-050-35524FED/Toronto.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Themesberg office">
+</div>
+<div class="row pt-4">
+    <h2>Popular Houses Right Now</h2>
+    @foreach (var item in Model.RandomHomes)
+    {
+        <div class="col-4 pt-2">
+            <div class="card shadow">
+                <img src="@item.Imagelinks.FirstOrDefault().Link" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
 
-                    <div class="card-body">
-                        <h3 class="h5 card-title mt-3">@item.Name</h3>
-                        <h3 class="h5 card-title mt-3">Homes For Sale</h3>
-                        <p class="card-text">@item.Count</p><a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm">Learn More</a>
-
-                    </div>
+                <div class="card-body">
+                    <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
+                    @if (@item.Price == 0)
+                    {
+                        <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                    }
+                    else
+                    {
+                        <p class="card-text">$@item.Price</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                    }
+                </div>
+                <div class="card-body">
+                    <h6>@item.BedRooms Beds @item.BathRooms Baths</h6>
+                    <h6></h6>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
+<div class="row pt-4">
+    <h2>Popular Cities in Canada</h2>
+    @foreach (var CityCount in Model.CountByCity.OrderByDescending(x => x.Count))
+    {
+        <div class="col-3 pt-2">
+            <div class="card shadow">
+                @switch (CityCount.Name)
+                {
+                    case "Toronto":
+                        <img src="~/img/toronto-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Calgary":
+                        <img src="~/img/calgary-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Edmonton":
+                        <img src="~/img/edmonton_main-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Ottawa":
+                        <img src="~/img/ottawa-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Mississauga":
+                        <img src="~/img/mississauga_main-unsplash.webp" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Hamilton":
+                        <img src="~/img/hamilton-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Vancouver":
+                        <img src="~/img/vancouver-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Brampton":
+                        <img src="~/img/brampton_main-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Regina":
+                        <img src="~/img/regina.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Oakville":
+                        <img src="~/img/Oakville-Ontario-Downtown.jfif" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Saskatoon":
+                        <img src="~/img/Saskatoon.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "London":
+                        <img src="~/img/London.jfif" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Montréal":
+                        <img src="~/img/Montréal.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Winnipeg":
+                        <img src="~/img/winnipeg-skyline-canada.webp" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Barrie":
+                        <img src="~/img/Barrie.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Windsor":
+                        <img src="~/img/winnipeg-skyline-canada.webp" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Richmond Hill":
+                        <img src="~/img/richmondhill-1.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Markham":
+                        <img src="~/img/markham_main-unsplash.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Burlington":
+                        <img src="~/img/Burlington.jfif" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Oshawa":
+                        <img src="~/img/Oshawa.jfif" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    case "Kitchener":
+                        <img src="~/img/Kitchener.jpg" class="card-img-top rounded-top w-200 p-3" style="width: auto;" alt="Mirror Image">
+                        break;
+                    default:
+                        break;
+                }
+
+
+                <div class="card-body">
+                    <h3 class="h5 card-title mt-3">@CityCount.Name</h3>
+                    <h3 class="h5 card-title mt-3">Homes For Sale</h3>
+                    <p class="card-text">@CityCount.Count</p><a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm">Learn More</a>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
 </div>
