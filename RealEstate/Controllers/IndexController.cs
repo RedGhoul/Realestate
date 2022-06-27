@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using Application.Queries.Home;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -12,30 +14,34 @@ public class IndexController : Controller
 {
     private readonly ApplicationDbContext _context;
     private CacheService _cache;
+    private readonly IMediator _mediator;
 
-    public IndexController(ApplicationDbContext context,CacheService cache)
+    public IndexController(IMediator mediator, ApplicationDbContext context,CacheService cache)
     {
         _context = context;
         _cache = cache;
+        _mediator = mediator;
     }
 
     public async Task<IActionResult> Index()
     {
-        var randomHomes = await _cache.GetOrSet<List<Home>>($"{nameof(IndexController)}_{nameof(Index)}_RandomHomes",
-            async Task<List<Home>>() =>
-        {
-            return await _context.Homes
-                .Include(h => h.AddressFk)
-                .Include(h => h.RealEstateBrokerFk)
-                .Include(h => h.Imagelinks.Take(5))
-                .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0
-                            && x.BedRooms > 0 && x.MlsNumber != null)
-                .OrderByDescending(x => x.CreatedAt)
-                .Take(9).ToListAsync();
-        }, new DistributedCacheEntryOptions()
-        {
-            SlidingExpiration = TimeSpan.FromSeconds(2)
-        });
+        var randomHomes = await _mediator.Send(new RandomHomeQuery() { randomHomeCount = 5});
+        
+        //await _cache.GetOrSet<List<Home>>($"{nameof(IndexController)}_{nameof(Index)}_RandomHomes",
+        //    async Task<List<Home>>() =>
+        //{
+        //    return await _context.Homes
+        //        .Include(h => h.AddressFk)
+        //        .Include(h => h.RealEstateBrokerFk)
+        //        .Include(h => h.Imagelinks.Take(5))
+        //        .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0
+        //                    && x.BedRooms > 0 && x.MlsNumber != null)
+        //        .OrderByDescending(x => x.CreatedAt)
+        //        .Take(9).ToListAsync();
+        //}, new DistributedCacheEntryOptions()
+        //{
+        //    SlidingExpiration = TimeSpan.FromSeconds(2)
+        //});
 
         var Cities = await _cache.GetOrSet<List<string>>($"{nameof(IndexController)}_{nameof(Index)}_Cities",
             async Task<List<string>>() => (await _context.Locations.Select(x => x.City).Distinct().ToListAsync())!);

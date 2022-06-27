@@ -6,6 +6,7 @@ namespace RealEstate.Models.Dtos;
 
 public class HomeDto
 {
+    public int Id { get; set; }
     [Required]
     public string GeneralizedAddress { get; set; }
     public string? MlsNumber { get; set; }
@@ -31,7 +32,6 @@ public class HomeDto
     public int? AddressFkId { get; set; }
     public int? RealEstateBrokerFkId { get; set; }
     public string? GenSlug { get; set; }
-    public string? HtmlPage { get; set; }
 
     public  Location? AddressFk { get; set; }
     public  Realestatebroker? RealEstateBrokerFk { get; set; }

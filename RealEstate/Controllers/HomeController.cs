@@ -1,14 +1,10 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MySqlConnector;
 using RealEstate.Data;
 using RealEstate.Models;
 using RealEstate.Models.ViewModels;
@@ -19,11 +15,13 @@ namespace RealEstate.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
 
-        public HomeController(ApplicationDbContext context, IConfiguration configuration)
+        public HomeController(IMediator mediator, ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+            _mediator = mediator;
         }
 
         [HttpGet]
