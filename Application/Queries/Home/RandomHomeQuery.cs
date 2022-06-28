@@ -11,5 +11,6 @@ namespace Application.Queries.Home
     public class RandomHomeQuery : IRequest<List<HomeDto>>
     {
         public int randomHomeCount { get; set; }
+        public int cacheTimeSec { get; set; } = 500;
     }
 }

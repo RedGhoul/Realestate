@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Handlers.Home
+namespace Application.Response
 {
-    internal class LandTypesHandler
+    internal class SearchHomeResponse
     {
     }
 }
