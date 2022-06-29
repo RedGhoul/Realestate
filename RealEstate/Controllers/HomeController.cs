@@ -37,7 +37,7 @@ namespace RealEstate.Controllers
             });
             
           
-            return View(foundHomes);
+            return View(foundHomes.homeDtos);
         }
         
         
@@ -56,6 +56,7 @@ namespace RealEstate.Controllers
         }
 
         // GET: Home/Details/5
+        //TODO: Need to make the URL for this just like the one for the django app
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
