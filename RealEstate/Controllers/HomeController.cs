@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RealEstate.Application.Queries;
 using RealEstate.Data;
 using RealEstate.Models;
 using RealEstate.Models.ViewModels;
@@ -27,35 +28,16 @@ namespace RealEstate.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string? city, string? landtype, int beds, int baths)
         {
-            var foundHomes = _context.Homes
-                .Include(x => x.Rooms)
-                .Include(x => x.AddressFk)
-                .Include(h => h.Imagelinks.Take(5))
-                .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
-                            x.BedRooms > 0 && x.MlsNumber != null);
+            var foundHomes = await _mediator.Send(new SearchHomeQuery()
+            {
+                baths = baths,
+                beds = beds,
+                landtype = landtype,
+                city = city
+            });
             
-            
-            if (beds > 0)
-            {
-                foundHomes = foundHomes.Where(x => x.BedRooms >= beds);
-            }
-
-            if (baths > 0)
-            {
-                foundHomes = foundHomes.Where(x => x.BedRooms >= beds);
-            }
-
-            if (city != null)
-            {
-                foundHomes = foundHomes.Where(x => x.AddressFk.City.Contains(city));
-            }
-            
-            if (landtype != null)
-            {
-                foundHomes = foundHomes.Where(x => x.Type.Contains(landtype));
-            }
-
-            return View(await foundHomes.OrderByDescending(x => x.CreatedAt).Take(20).ToListAsync());
+          
+            return View(foundHomes);
         }
         
         

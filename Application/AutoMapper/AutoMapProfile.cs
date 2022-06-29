@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Dtos;
+using AutoMapper;
 using RealEstate.Models;
 using RealEstate.Models.Dtos;
 
@@ -9,7 +10,9 @@ public class AutoMapProfile : Profile
 
     public AutoMapProfile()
     {
-        CreateMap<Home, HomeDto>()
-            .ReverseMap();
+        CreateMap<Home, HomeDto>().ReverseMap();
+        CreateMap<Imagelink, ImagelinkDto>().ReverseMap();
+        CreateMap<Room, RoomDto>().ReverseMap();
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 
+using Application.Dtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Models.Dtos;
@@ -35,6 +36,6 @@ public class HomeDto
 
     public  Location? AddressFk { get; set; }
     public  Realestatebroker? RealEstateBrokerFk { get; set; }
-    public  ICollection<Imagelink>? Imagelinks { get; set; }
-    public  ICollection<Room>? Rooms { get; set; }
+    public  ICollection<ImagelinkDto>? Imagelinks { get; set; }
+    public  ICollection<RoomDto>? Rooms { get; set; }
 }

@@ -1,5 +1,4 @@
-﻿using RealEstate.Models.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Response
 {
-    public class SearchHomeResponse
+    public class RelatedHomesResponse
     {
-        public List<HomeDto> homeDtos { get; set; }
+        List<List<RealEstate.Models.Home>> listsOfRelatedHomes { get; set; }
     }
 }
