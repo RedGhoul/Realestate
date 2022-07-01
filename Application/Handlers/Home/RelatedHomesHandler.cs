@@ -28,29 +28,40 @@ namespace Application.Handlers.Home
             _context = context;
         }
 
-        public async Task<List<HomeDto>> Handle(RandomHomeQuery request, CancellationToken cancellationToken)
+        public async Task<RelatedHomesResponse> Handle(RelatedHomesQuery request, CancellationToken cancellationToken)
         {
-            return _mapper.Map<List<HomeDto>>(await _cache.GetOrSet<List<RealEstate.Models.Home>>(
-                $"{nameof(RandomHomesHandler)}_{nameof(Index)}_RandomHomes",
-                   async Task<List<RealEstate.Models.Home>> () =>
-                   {
-                       return await _context.Homes
-                            .Include(h => h.AddressFk)
-                            .Include(h => h.RealEstateBrokerFk)
-                            .Include(h => h.Imagelinks.Take(request.randomHomeCount))
-                            .Where(x => x.Imagelinks.Count > 0 && x.Price > 0 && x.BathRooms > 0
-                                        && x.BedRooms > 0 && x.MlsNumber != null)
-                            .OrderByDescending(x => x.CreatedAt)
-                            .Take(9).ToListAsync();
-                   }, new DistributedCacheEntryOptions()
-                   {
-                       SlidingExpiration = TimeSpan.FromSeconds(2)
-                   }));
-        }
+            RelatedHomesResponse response = new RelatedHomesResponse() {
+                listsOfRelatedHomes = new List<List<HomeDto>>()
+            };
+            List<int> relatedId = new List<int>();
 
-        public Task<RelatedHomesResponse> Handle(RelatedHomesQuery request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            for(int i = 0; i < request.numberOfRelatedHomeLists; i++)
+            {
+                var relatedHomes = _mapper.Map<List<HomeDto>>(await _cache.GetOrSet<List<RealEstate.Models.Home>>(
+                   $"{nameof(RelatedHomesHandler)}_{nameof(RelatedHomesResponse)}_RelatedHomes_{i}",
+                      async Task<List<RealEstate.Models.Home>> () =>
+                      {
+                          return await _context.Homes
+                               .Include(h => h.AddressFk)
+                               .Include(h => h.RealEstateBrokerFk)
+                               .Include(h => h.Imagelinks.Take(3))
+                               .Where(x => x.AddressFk != null && x.AddressFk.City == request.relatedCity
+                                        && x.Id != request.curCityId && x.Imagelinks.Count > 0 
+                                        && x.Price > 0 && x.BathRooms > 0
+                                        && x.BedRooms > 0 && x.MlsNumber != null
+                                        && !relatedId.Contains(x.Id))
+                               .OrderByDescending(x => x.CreatedAt)
+                               .Take(6).ToListAsync();
+                      }, new DistributedCacheEntryOptions()
+                      {
+                          SlidingExpiration = TimeSpan.FromSeconds(request.cacheTime)
+                      }));
+                relatedId.AddRange(relatedHomes.Select(x => x.Id).ToList());
+                response.listsOfRelatedHomes.Add(relatedHomes);
+            }
+
+
+            return response;
         }
     }
 }

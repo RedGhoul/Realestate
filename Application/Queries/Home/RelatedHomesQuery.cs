@@ -10,7 +10,9 @@ namespace Application.Queries.Home
 {
     public class RelatedHomesQuery : IRequest<RelatedHomesResponse>
     {
-        List<int> homesToAvoid { get; set; }
-        public int CacheTime { get; set; }
+        public int cacheTime { get; set; } = 300;
+        public int numberOfRelatedHomeLists { get; set; } = 2;
+        public string relatedCity { get; set; }
+        public int curCityId { get; set; }
     }
 }

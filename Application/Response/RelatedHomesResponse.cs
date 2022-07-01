@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RealEstate.Models.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Application.Response
 {
     public class RelatedHomesResponse
     {
-        List<List<RealEstate.Models.Home>> listsOfRelatedHomes { get; set; }
+        public List<List<HomeDto>> listsOfRelatedHomes { get; set; }
     }
 }

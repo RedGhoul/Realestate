@@ -30,7 +30,7 @@ namespace Application.Handlers.Home
         public async Task<GetHomeBySlugResponse> Handle(GetHomeBySlugQuery request, CancellationToken cancellationToken)
         {
             GetHomeBySlugResponse response = new GetHomeBySlugResponse();
-            var home = _cache.GetOrSet<HomeDto>($"{request.Slug}_{nameof(GetHomeBySlugHandler)}", 
+            var home = await _cache.GetOrSet<HomeDto>($"{request.slug}_{nameof(GetHomeBySlugHandler)}", 
                 async Task<HomeDto> () =>
                 {
                     return _mapper.Map<HomeDto>(await _context.Homes
@@ -38,7 +38,7 @@ namespace Application.Handlers.Home
                     .Include(h => h.Imagelinks)
                     .Include(h => h.RealEstateBrokerFk)
                     .AsSplitQuery()
-                    .FirstOrDefaultAsync(m => m.GenSlug == request.Slug));
+                    .FirstOrDefaultAsync(m => m.GenSlug == request.slug));
                 } , new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions()
                 {
                     SlidingExpiration = TimeSpan.FromDays(30)

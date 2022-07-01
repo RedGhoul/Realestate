@@ -107,11 +107,11 @@
                     <h3 class="h5 card-title mt-3">@item.GeneralizedAddress</h3>
                     @if (@item.Price == 0)
                     {
-                        <p class="card-text">$@item.RentPrice CAD Per Month</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                        <p class="card-text">$@item.RentPrice CAD Per Month</p><a href="/homes/details/@item.GenSlug" class="btn btn-primary btn-sm">Learn More</a>
                     }
                     else
                     {
-                        <p class="card-text">$@item.Price</p><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Learn More</a>
+                        <p class="card-text">$@item.Price</p><a href="/homes/details/@item.GenSlug" class="btn btn-primary btn-sm">Learn More</a>
                     }
                 </div>
                 <div class="card-body">

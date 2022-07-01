@@ -1,5 +1,6 @@
 #nullable disable
 using System.Data;
+using Application.Queries.Home;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,13 @@ using RealEstate.Models.ViewModels;
 
 namespace RealEstate.Controllers
 {
-    public class HomeController : Controller
+    public class HomesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
 
-        public HomeController(IMediator mediator, ApplicationDbContext context, IConfiguration configuration)
+        public HomesController(IMediator mediator, ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -35,73 +36,40 @@ namespace RealEstate.Controllers
                 landtype = landtype,
                 city = city
             });
-            
-          
+
+
             return View(foundHomes.homeDtos);
         }
-        
-        
-        // GET: Home
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext =
-                _context.Homes
-                    .Include(h => h.AddressFk)
-                    .Include(h => h.RealEstateBrokerFk)
-                    .Include(h => h.Imagelinks)
-                    .Where(x => x.Imagelinks.Count > 0 && (x.Price != 0 || x.RentPrice != 0) && x.BathRooms > 0 &&
-                                x.BedRooms > 0 && x.MlsNumber != null).OrderByDescending(x => x.CreatedAt)
-                    .Take(20);
-            return View(await applicationDbContext.ToListAsync());
-        }
+
 
         // GET: Home/Details/5
         //TODO: Need to make the URL for this just like the one for the django app
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet("homes/details/{slug}")]
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
+            var homeBySlugResponse = await _mediator.Send(new GetHomeBySlugQuery()
+            {
+                slug = slug
+            });
 
-            var home = await _context.Homes
-                .Include(h => h.AddressFk)
-                .Include(h => h.Imagelinks)
-                .Include(h => h.RealEstateBrokerFk)
-                .AsSplitQuery()
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (home == null)
+            if (homeBySlugResponse == null)
             {
                 return NotFound();
             }
-            
-            List<Home> relatedHomesSides = await _context.Homes.Include(h => h.AddressFk)
-                .Include(h => h.Imagelinks)
-                .Include(h => h.RealEstateBrokerFk)
-                .Where(x => x.AddressFk.City == home.AddressFk.City 
-                            && x.Id != home.Id 
-                            && x.Imagelinks.Any()).OrderByDescending(x => x.CreatedAt)
-                .AsSplitQuery()
-                .Take(5).ToListAsync();
-            
-            List<Home> relatedHomesBottom = await _context.Homes.Include(h => h.AddressFk)
-                .Include(h => h.Imagelinks)
-                .Include(h => h.RealEstateBrokerFk)
-                .Where(x => x.AddressFk.City == home.AddressFk.City && x.Id != home.Id && 
-                            !relatedHomesSides.Select(v => v.Id).Contains(x.Id) 
-                            && x.Imagelinks.Any()).OrderByDescending(x => x.CreatedAt)
-                .Skip(new Random().Next(1, 100))
-                .AsSplitQuery()
-                .Take(6).ToListAsync();
-            
-
+            var relatedHomes = await _mediator.Send(new RelatedHomesQuery() {
+                relatedCity = homeBySlugResponse.Home.AddressFk.City,
+                curCityId = homeBySlugResponse.Home.Id
+            });
+        
             return View(new DetailsViewModel()
             {
                 MapBoxApiKey = _configuration[nameof(DetailsViewModel.MapBoxApiKey)],
-                mainHome = home,
-                relatedHomesBottom = relatedHomesBottom,
-                relatedHomesSide = relatedHomesSides
+                mainHome = homeBySlugResponse.Home,
+                relatedHomes = relatedHomes.listsOfRelatedHomes
             });
         }
 

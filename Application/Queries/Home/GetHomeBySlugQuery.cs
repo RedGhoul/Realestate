@@ -10,6 +10,6 @@ namespace Application.Queries.Home
 {
     public class GetHomeBySlugQuery : IRequest<GetHomeBySlugResponse>
     {
-        public string Slug { get; set; }
+        public string slug { get; set; }
     }
 }
